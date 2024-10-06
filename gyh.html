@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Network and Video Check</title>
+    <style>
+        #network-status {
+            display: none;
+            color: red;
+            font-size: 18px;
+            text-align: center;
+            padding: 10px;
+            background-color: yellow;
+        }
+        #loading-screen {
+            display: block;
+            text-align: center;
+            padding: 20px;
+        }
+        #main-content {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- Network Status -->
+    <div id="network-status">Babu haɗin intanet!</div>
+
+    <!-- Loading Screen -->
+    <div id="loading-screen">Ana shirin loda bidiyo...</div>
+
+    <!-- Main Content -->
+    <div id="main-content">
+        <video id="background-video" controls>
+            <source src="your-video.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    </div>
+
+    <script>
+        function checkNetwork() {
+            const networkStatus = document.getElementById('network-status');
+            
+            if (!navigator.onLine) {
+                // Idan babu intanet, a bayyana network status
+                networkStatus.style.display = 'block'; 
+            } else {
+                // Idan an sami intanet, a boye network status
+                networkStatus.style.display = 'none'; 
+            }
+        }
+
+        // Saurari canji a haɗin intanet
+        window.addEventListener('online', checkNetwork);
+        window.addEventListener('offline', checkNetwork);
+
+        // Duba haɗin intanet da zarar an bude shafin
+        window.onload = function() {
+            checkNetwork();
+
+            var video = document.getElementById('background-video');
+            var loadingScreen = document.getElementById('loading-screen');
+            var mainContent = document.getElementById('main-content');
+
+            // When video is ready to play, hide loading screen and show main content
+            video.addEventListener('canplaythrough', function() {
+                loadingScreen.style.display = 'none'; // Hide loading screen
+                mainContent.style.display = 'block';  // Show main content
+            });
+        };
+    </script>
+</body>
+</html>
+.fas8{
+    margin-top: 15px;
+    font-size: 18px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}

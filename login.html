@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TanaCoin Login</title>
+        <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body, html {
+            height: 100%;
+            overflow: hidden;
+            font-family: Arial, sans-serif;
+        text-shadow: 3px 4px 4px rgba(0, 0, 0, 0.3);         
+        }
+
+        #background-video {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1;
+        }
+        
+         /* Loading screen styles */
+#loading-screen {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #90ff2b; 
+    width: 100%;
+    height: 100vh;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 9999;
+}
+
+.icon-container img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    animation: pulse 2s infinite; 
+}
+
+.fas8{
+    margin-top: 15px;
+    font-size: 18px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+
+@keyframes pulse {
+    0% {
+        opacity: 0.3;
+    }
+    50% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0.3;
+    }
+}
+
+/* Hidden main content by default */
+#main-content {
+    display: none;
+}
+
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+.login-container {
+    width: 293px;
+    margin: 10px auto;
+    background: rgba(255, 255, 255, 0.8);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+    Font-weight:bold;
+}
+
+h1 {
+    text-align: center;
+    color: #2600ff;
+    margin-bottom: 20px;
+    Font-weight:bold;
+    Font-size:18px;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+label {
+    margin-bottom: 5px;
+}
+
+input[type="email"], input[type="password"] {
+    padding: 10px;
+    margin-bottom: 1px;
+    border: 1px solid #90ff2b;
+    border-radius: 5px;
+    font-size: 12px;
+    
+    
+}
+
+button {
+    padding: 10px;
+    background-color: #00FF00;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 17px;
+    
+    cursor: pointer;
+    
+    
+}
+
+button:hover {
+    background-color: #007700;
+}
+
+.password-wrapper {
+    position: relative
+}
+
+.toggle-password {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+}
+
+p {
+    text-align: center;
+    Font-size:13px;
+}
+
+a {
+    color: #FF0000;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* Modal styling */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+    background-color: #fff;
+    margin: 15% auto;
+    padding: 20px;
+    width: 300px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+}
+
+.close {
+    float: right;
+    cursor: pointer;
+    font-size: 20px;
+}
+/* Image container styling */
+        .image-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 2px; 
+        }
+
+        .image {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+          animation: pulse 2s infinite;     
+            box-shadow: 0 0 20px rgba(118, 75, 162, 0.5);
+            z-index: 10;
+        }
+
+        @keyframes rotate-horizontal {
+            from {
+                transform: rotateY(0deg);
+            }
+            to {
+                transform: rotateY(360deg);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="loading-screen">
+        <div class="icon-container">
+            <img src="dove.png" alt="Loading Icon">
+        </div>
+        <p class="fas8"><i style="color:red;">Tana</i><i style="color:green;">Coin</i><i style="color:blue">
+            ...</i></p>
+    </div>
+ <i id="main-content" style="display:none;">
+    <video autoplay muted loop plays Inline  id="background-video">
+            <source src="video.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    </i>
+
+    <!-- Image container -->
+    <div class="image-container">
+        <img src="dove.png" class="image" alt="Rotating Image">
+    </div>
+
+    <div class="login-container">
+        <h1><i style="color:red;">Tana</i><i style="color:green;">Coin</i> Mining Login</h1>
+        <form id="loginForm">
+            <label for="email">Email Address</label>
+            <input type="email" id="email" name="email" placeholder="examples57gmail.com" required>
+            
+            <label for="password">Password</label>
+            <div class="password-wrapper">
+                <input type="password" id="password" name="password" placeholder="password" required>
+                <span class="toggle-password">👁️‍🗨️</span>
+            </div>
+            
+            <button type="submit">Submit</button>
+        </form>
+        <p><a href="#" id="forgotPassword">Forget Password?</a></p>
+        <p>Don't have an account? <a  href="index.html">Register</a></p>
+    </div>
+
+    <!-- Modal for forgot password -->
+    <div id="forgotPasswordModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Reset Password</h2>
+            <form id="forgotForm">
+                <label for="forgotEmail">Email Address</label>
+                <input type="email" id="forgotEmail" name="forgotEmail" required>
+                <button type="submit">Submit</button>
+            </form>
+        </div>
+    </div>
+    
+<script>
+        window.onload = function() {
+    var video = document.getElementById('background-video');
+    var loadingScreen = document.getElementById('loading-screen');
+    var mainContent = document.getElementById('main-content');
+
+    // When video starts playing, hide the loading screen and show the main content
+    video.addEventListener('canplaythrough', function() {
+        loadingScreen.style.display = 'none'; // Hide loading screen
+        mainContent.style.display = 'block';  // Show main content
+    });
+};
+
+    </script>
+    <script type="module">
+  // Kawo ayyukan da kake bukata daga Firebase SDKs
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.1.0/firebase-app.js";
+  import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/9.1.0/firebase-firestore.js";
+  import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.1.0/firebase-auth.js";
+  
+// Firebase configuration
+const firebaseConfig = {
+  apiKey: "AIzaSyCldVBlGP7hsERLEa9R30PSYZEOXppYvDs",
+  authDomain: "tanacoin-75344.firebaseapp.com",
+  projectId: "tanacoin-75344",
+  storageBucket: "tanacoin-75344.appspot.com",
+  messagingSenderId: "425342256564",
+  appId: "1:425342256564:web:b33f74f41e8d7d62659ee1"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+
+// Toggle password visibility
+document.querySelectorAll('.toggle-password').forEach(item => {
+    item.addEventListener('click', function () {
+        const passwordField = this.closest('.password-container').querySelector('input[type="password"], input[type="text"]');
+        const type = passwordField.getAttribute('type') === 'password' ? 'text' : 'password';
+        passwordField.setAttribute('type', type);
+        
+        // Optionally toggle the icon
+        this.classList.toggle('showing');
+    });
+});
+
+
+// Login form submission
+document.getElementById('loginForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+    
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+
+    // Check localStorage for users
+    const users = JSON.parse(localStorage.getItem('users')) || [];
+    const user = users.find(user => user.email === email);
+
+    if (user) {
+        // Check if password is correct
+        if (user.password !== password) {
+            alert('This password is not correct.');
+            return;
+        }
+
+        // Login successful, redirect to mining page
+        alert('Login successful!');
+        localStorage.setItem('loggedIn', true); // Store login session
+        window.location.href = 'mining.html';
+    } else {
+        // If not in localStorage, check Firebase
+        checkFirebase(email, password);
+    }
+});
+
+// Check if user is already logged in
+if (localStorage.getItem('loggedIn')) {
+    window.location.href = 'mining.html';
+}
+
+// Function to check Firebase for user login
+function checkFirebase(email, password) {
+    signInWithEmailAndPassword(auth, email, password)
+    .then((userCredential) => {
+        alert('Login successful!');
+        localStorage.setItem('loggedIn', true);
+        window.location.href = 'mining.html';
+    })
+    .catch((error) => {
+        alert('Login failed. Please check your email and password.');
+        console.error('Error logging into Firebase:', error);
+    });
+}
+
+// Forgot password modal handling
+const forgotPasswordModal = document.getElementById('forgotPasswordModal');
+const closeBtn = document.querySelector('.close');
+
+// Open forgot password modal
+document.getElementById('forgotPassword').addEventListener('click', function () {
+    forgotPasswordModal.style.display = 'block';
+});
+
+// Close modal
+closeBtn.addEventListener('click', function () {
+    forgotPasswordModal.style.display = 'none';
+});
+
+// Forgot password form submission
+document.getElementById('forgotForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+    
+    const email = document.getElementById('forgotEmail').value;
+
+    // Check localStorage for users
+    const users = JSON.parse(localStorage.getItem('users')) || [];
+    const user = users.find(user => user.email === email);
+
+    if (user) {
+        sendNewPassword(email, user);
+    } else {
+        // If not in localStorage, send Firebase reset email
+        sendFirebaseResetPassword(email);
+    }
+});
+
+// Function to send Firebase reset password
+function sendFirebaseResetPassword(email) {
+    sendPasswordResetEmail(auth, email)
+    .then(() => {
+        alert('A reset password email has been sent to your email address.');
+    })
+    .catch((error) => {
+        console.error('Error sending password reset email:', error);
+        alert('Error sending password reset email.');
+    });
+}
+
+// Function to send new password via EmailJS
+function sendNewPassword(email, user) {
+    const newPassword = 'TanaX' + Math.floor(Math.random() * 1000);
+    user.password = newPassword;
+
+    // Update the password in localStorage if found
+    const users = JSON.parse(localStorage.getItem('users')) || [];
+    const existingUser = users.find(u => u.email === email);
+    if (existingUser) {
+        existingUser.password = newPassword;
+        localStorage.setItem('users', JSON.stringify(users));
+    }
+
+    // Send new password via EmailJS
+    emailjs.send('YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', {
+        to_email: email,
+        new_password: newPassword
+    })
+    .then(() => {
+        alert('Check your email to get your new password, then return to login to access your account.');
+    })
+    .catch((error) => {
+        console.log('Failed to send email:', error);
+    });
+}
+
+           </script>
+</body>
+</html>

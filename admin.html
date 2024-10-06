@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+       text-shadow: 3px 4px 4px rgba(0, 0, 0, 0.3);          
+        }
+
+        #admin-container {
+            width: 80%;
+            margin: 50px auto;
+            padding: 20px;
+            background: #95f5ff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        .setting {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        input[type="number"], 
+        input[type="password"], 
+        textarea {
+            width: 90%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #5bff15;
+            border-radius: 5px;
+        }
+
+        button {
+            background-color: #28a745;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #4615ff;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            font-weight:bold;
+            font-size:5px;
+        }
+
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <div id="admin-container">
+        <h1>Admin Dashboard</h1>
+        
+        <!-- Password Input Section -->
+        <div id="password-section">
+            <label for="admin-password">Enter Admin Password:</label>
+            <input type="password" id="admin-password" placeholder="Enter your password">
+            <button id="login-btn">Login</button>
+        </div>
+
+        <!-- Admin Control Panel -->
+        <div id="control-panel" class="hidden">
+            <!-- Target Price TanaCoin -->
+            <div class="setting">
+                <label for="target-price">Target TanaCoin Price:</label>
+                <input type="number" id="target-price" placeholder="$">
+                <button onclick="submitTargetPrice()">Submit</button>
+            </div>
+
+            <!-- Total TanaCoin -->
+            <div class="setting">
+                <label for="total-coin">Total TanaCoin:</label>
+                <input type="number" id="total-coin" placeholder="Total TanaCoin">
+                <button onclick="submitTotalCoin()">Submit</button>
+            </div>
+
+            <!-- Stop Counting Time -->
+            <div class="setting">
+                <label for="counting-time">Stop Counting End TanaCoin Mining:</label>
+                <button onclick="toggleCounting('on')">On</button>
+                <button onclick="toggleCounting('off')">Off</button>
+            </div>
+
+            <!-- Withdrawal Control -->
+            <div class="setting">
+                <label for="withdrawal">Open Change TanaCoin Withdrawal:</label>
+                <button onclick="toggleWithdrawal('on')">On</button>
+                <button onclick="toggleWithdrawal('off')">Off</button>
+            </div>
+
+            <!-- Mining Control -->
+            <div class="setting">
+                <label for="close-mining">Close Mining:</label>
+                <button onclick="toggleMining('on')">On</button>
+                <button onclick="toggleMining('off')">Off</button>
+            </div>
+
+            <!-- Show All Total Users Mining -->
+            <div class="setting">
+                <label for="total-users">Show All Total Users Mining:</label>
+                <input type="text" id="total-users" readonly>
+            </div>
+
+            <!-- All Users Table -->
+            <div class="setting">
+                <h3>All Users TanaCoin Miners</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Email</th>
+                            <th>Username</th>
+                            <th>TanaCoin</th>
+                        </tr>
+                    </thead>
+                    <tbody id="user-table">
+                        <!-- User Data will be dynamically loaded here -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Send Message to Users -->
+            <div class="setting">
+                <label for="send-message">Send Message to All Users Mining:</label>
+                <textarea id="send-message" placeholder="Type your message here..."></textarea>
+                <button onclick="sendMessage()">Send</button>
+            </div>
+
+            <!-- Send Email Notification -->
+            <div class="setting">
+                <label for="send-email">Send Email to All Users:</label>
+                <textarea id="send-email" placeholder="Type your email message here..."></textarea>
+                <button onclick="sendEmail()">Send</button>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Realm SDK -->
+    
+    <script type="module">
+  // Kawo ayyukan da kake bukata daga Firebase SDKs
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.1.0/firebase-app.js";
+  import { getFirestore, collection, addDoc, setDoc, getDocs, doc } from "https://www.gstatic.com/firebasejs/9.1.0/firebase-firestore.js";
+  import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.1.0/firebase-auth.js";
+
+// Your web app's Firebase configuration
+const firebaseConfig = {
+  apiKey: "AIzaSyCldVBlGP7hsERLEa9R30PSYZEOXppYvDs",
+  authDomain: "tanacoin-75344.firebaseapp.com",
+  projectId: "tanacoin-75344",
+  storageBucket: "tanacoin-75344.appspot.com",
+  messagingSenderId: "425342256564",
+  appId: "1:425342256564:web:b33f74f41e8d7d62659ee1"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+const auth = getAuth(app);
+
+// Password Authentication
+document.getElementById('login-btn').addEventListener('click', function () {
+    const password = document.getElementById('admin-password').value;
+    if (password === 'haruna66') {
+        document.getElementById('control-panel').classList.remove('hidden');
+        document.getElementById('password-section').classList.add('hidden');
+    } else {
+        alert('Incorrect Password!');
+    }
+});
+
+// Submit Target Price to Firebase Firestore
+async function submitTargetPrice() {
+    const targetPrice = document.getElementById('target-price').value;
+    try {
+        await setDoc(doc(db, "Settings", "targetPrice"), {
+            setting: "targetPrice",
+            value: targetPrice
+        });
+        alert('Target TanaCoin Price submitted successfully!');
+    } catch (e) {
+        console.error("Error adding document: ", e);
+    }
+}
+
+// Submit Total TanaCoin to Firebase Firestore
+async function submitTotalCoin() {
+    const totalCoin = document.getElementById('total-coin').value;
+    try {
+        await setDoc(doc(db, "Settings", "totalCoin"), {
+            setting: "totalCoin",
+            value: totalCoin
+        });
+        alert('Total TanaCoin submitted successfully!');
+    } catch (e) {
+        console.error("Error adding document: ", e);
+    }
+}
+
+// Toggle Counting Time
+function toggleCounting(status) {
+    localStorage.setItem('countingTime', status);
+    alert(`Counting Time set to: ${status}`);
+}
+
+// Toggle Withdrawal Control in Firebase Firestore
+async function toggleWithdrawal(status) {
+    const withdrawalStatus = status === 'on' ? 'open' : 'closed';
+    try {
+        await setDoc(doc(db, "Settings", "withdrawalStatus"), {
+            setting: "withdrawalStatus",
+            value: withdrawalStatus
+        });
+        alert(`Withdrawal set to: ${withdrawalStatus}`);
+    } catch (e) {
+        console.error("Error adding document: ", e);
+    }
+}
+
+// Toggle Mining Control in Firebase Firestore
+async function toggleMining(status) {
+    try {
+        await setDoc(doc(db, "Settings", "miningStatus"), {
+            setting: "miningStatus",
+            value: status
+        });
+        alert(`Mining set to: ${status}`);
+    } catch (e) {
+        console.error("Error adding document: ", e);
+    }
+}
+
+// Send Message to Users (Firebase Firestore Example)
+async function sendMessage() {
+    const message = document.getElementById('send-message').value;
+    try {
+        await addDoc(collection(db, "Messages"), {
+            message: message
+        });
+        alert('Message sent to users: ' + message);
+    } catch (e) {
+        console.error("Error adding message: ", e);
+    }
+}
+
+// Send Email to Users (Dummy Example)
+function sendEmail() {
+    const emailMessage = document.getElementById('send-email').value;
+    alert('Email sent to users: ' + emailMessage);
+}
+
+// Load Users Data from Firebase Firestore
+async function loadUsers() {
+    const querySnapshot = await getDocs(collection(db, "users"));
+    let userTable = document.getElementById('user-table');
+    
+    querySnapshot.forEach((doc) => {
+        let row = userTable.insertRow();
+        row.insertCell(0).innerText = doc.data().email;
+        row.insertCell(1).innerText = doc.data().username;
+        row.insertCell(2).innerText = doc.data().tanaCoin;
+    });
+
+    document.getElementById('total-users').value = querySnapshot.size;
+}
+
+// Initialize Firebase and Load Users on Page Load
+window.onload = function () {
+    loadUsers();
+};
+
+</script>
+</body>
+</html>

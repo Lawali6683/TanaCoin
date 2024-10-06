@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TanaCoin Mining End</title>
+    
+    <style>
+        * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #121212;
+    
+    color: #ffffff;
+    display: flex
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    text-shadow: 3px 4px 4px rgba(0, 0, 0, 0.3);      
+}
+
+.container {
+    width: 100%;
+    max-width: 900px;
+    Text-align:center;
+    background-color: #1e1e1e;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.6);
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+header h1 {
+    font-size: 16px;
+}
+
+#backBtn {
+    background-color: transparent;
+    color: #5bff15;
+    font-size: 1.5rem;
+    border: none;
+    cursor: pointer;
+}
+
+section {
+    margin-bottom: 20px;
+}
+
+h2 {
+    font-size: 16px;
+    margin-bottom: 5px;
+}
+
+p {
+    font-size: 1rem;
+    color: #f0f0f0;
+}
+
+#endTime {
+    font-size: 1.5rem;
+    color: #00ff00;
+}
+.now{
+    Text-align:none;
+    Font-weight:bold;
+    Font-size:10px;
+    Color:#ff00c7;
+}
+
+.tuy{
+    Font-weight:bold;
+    Font-size:16px;
+}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <button id="backBtn">✖️</button>
+           <h1><i style="color:red;">🕊️Tana</i><i style="color:green;">Coin</i> Mining </h1>
+        </header>
+
+        <div class="content">
+            <section>
+                <h2>Target Market <i style="color:red;">🕊️Tana</i><i style="color:green;">Coin</i> Price:</h2>
+                <p style="color:#46ff15;" >$1 to 1.00000 <i style="color:red;">🕊️Tana</i><i style="color:green;">Coin</i></p>
+            </section>
+
+            <section>
+                <h2>Total <i style="color:red;">🕊️Tana</i><i style="color:green;">Coin</i>:</h2>
+                <p id="totalCoins3" style="color:#46ff15;">[Enter Total]</p>
+            </section>
+<section>
+    <h2 class="tyu">Total Mining <i class="tyu" style="color:red;">🕊️Tana</i><i style="color:green;">Coin</i>: <span id="totalCoins"style="color:#46ff15;">1348.840</span></h2>
+
+</section>
+            <section>
+                <h2>All <i style="color:red;">🕊️Tana</i><i style="color:green;">Coin</i> People Mining:</h2>
+                <p   id="allMiningCoins" style="color:#46ff15;">Loading...</p>
+            </section>
+
+            <section>
+                <h2>End <i style="color:red;">🕊️Tana</i><i style="color:green;">Coin</i> Mining Time:</h2>
+                <p id="endTime">00:00:00</p>
+            </section>
+        </div>
+        <p class="now">
+            <i style="color:red;">🕊️Tana</i><i style="color:green;">Coin</i> is an exciting new mining coin that you can easily convert and trade on popular exchanges like Binance, Coinbase, Kraken, and KuCoin. Whether you want to sell your <i style="color:red;">🕊️Tana</i><i style="color:green;">Coin</i> on Connected or exchange it directly in the <i style="color:red;">🕊️Tana</i><i style="color:green;">Coin</i> Market, the process is seamless. You can also convert your <i style="color:red;">🕊️Tana</i><i style="color:green;">Coin</i> to dollars within your <i style="color:red;">🕊️Tana</i><i style="color:green;">Coin</i> Wallet and withdraw the dollars directly through your Telegram Wallet. We are pleased to announce that <i style="color:red;">🕊️Tana</i><i style="color:green;">Coin</i> will be listed with a starting price of just $1 on Bayinace's coin market.</p>
+
+<p class="now">Now is the perfect time to jump into <i style="color:red;">🕊️Tana</i><i style="color:green;">Coin</i> mining and maximize your earnings!
+        </p>
+    </div>
+    
+       <script type="module">
+  // Kawo ayyukan da kake bukata daga Firebase SDKs
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.1.0/firebase-app.js";
+  import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/9.1.0/firebase-firestore.js";
+
+// Your web app's Firebase configuration
+const firebaseConfig = {
+  apiKey: "AIzaSyCldVBlGP7hsERLEa9R30PSYZEOXppYvDs",
+  authDomain: "tanacoin-75344.firebaseapp.com",
+  projectId: "tanacoin-75344",
+  storageBucket: "tanacoin-75344.appspot.com",
+  messagingSenderId: "425342256564",
+  appId: "1:425342256564:web:b33f74f41e8d7d62659ee1"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+// Back button functionality
+document.getElementById('backBtn').addEventListener('click', function () {
+    window.onload = function () {
+        // Check if counting is stopped
+        const countingStatus = localStorage.getItem('countingTime');
+        const endTime = localStorage.getItem('endTime');
+        
+        if (countingStatus === 'off' && endTime) {
+            document.getElementById('endTime').innerText = endTime; // Show the stored end time
+            document.getElementById('allMiningCoins').innerText = "TanaCoin Mining has stopped!";
+            document.getElementById('allMiningCoins').style.color = "red";
+        } else {
+            document.getElementById('endTime').innerText = "00:00:00";
+            document.getElementById('allMiningCoins').innerText = "Mining is ongoing...";
+            document.getElementById('allMiningCoins').style.color = "#46ff15";
+        }
+
+        // Function da ke duba localStorage da Firebase
+        async function getTotalCoins() {
+            // Da farko, duba ko akwai adadin coins a localStorage
+            let localTotal = localStorage.getItem('totalCoins');
+            
+            if (localTotal) {
+                // Idan akwai adadi a localStorage, a nuna shi
+                document.getElementById("totalCoins").textContent = parseFloat(localTotal).toFixed(4);
+            } else {
+                // Idan babu, a nuna misalin adadi na farko
+                document.getElementById("totalCoins").textContent = '2467.6804';
+            }
+
+            // Samo adadin coins din user daga Firebase Firestore
+            try {
+                const docRef = doc(db, "coins", "your-user-id");  // Canza da user ID na ka
+                const docSnap = await getDoc(docRef);
+
+                if (docSnap.exists()) {
+                    const data = docSnap.data();
+                    const totalCoins = data.totalCoins;
+
+                    if (totalCoins) {
+                        document.getElementById("totalCoins").textContent = parseFloat(totalCoins).toFixed(4);
+                        localStorage.setItem('totalCoins', totalCoins);  // Ajiye a localStorage
+                    }
+                } else {
+                    console.log("No such document!");
+                }
+            } catch (err) {
+                console.error("Error fetching data from Firestore:", err);
+            }
+        }
+
+        // Kirga duk bayan minti 1
+        setInterval(getTotalCoins, 60000);
+
+        // Kira don karanta coins na farko
+        getTotalCoins();
+
+        // Additional logic to display totalCoins (you can load this dynamically from the server)
+        const totalCoins = localStorage.getItem('totalCoin3');
+        if (totalCoins) {
+            document.getElementById('totalCoins3').innerText = totalCoins;
+        }
+    };
+});
+
+
+    </script>
+    <script>
+    // Gyara Nunin Jimlar TanaCoin
+    document.getElementById('totalCoins3').innerText = localStorage.getItem('totalCoin3') || '0';
+
+    // Gyara Nunin Jimlar Masu Mining
+    document.getElementById('allMiningCoins').innerText = localStorage.getItem('totalUsers') || '0';
+
+    // Sabunta Lokacin Ƙarshe na Mining
+    function updateEndTime() {
+        const now = new Date();
+        const endTime = new Date(now.getTime() + 3600000); // +1 hour
+        const formattedTime = endTime.toLocaleTimeString();
+        document.getElementById('endTime').innerText = formattedTime;
+    }
+    setInterval(updateEndTime, 1000);
+    }     
+</script>
+
+</body>
+</html>

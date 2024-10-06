@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TanaCoin Mining </title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">   
+    <style>
+         * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body, html {
+            height: 100%;
+            overflow: hidden;
+            font-family: Arial, sans-serif;
+            Color:white;
+            text-shadow: 3px 4px 4px rgba(0, 0, 0, 0.3);      
+        }
+
+        #background-video {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+       text-shadow: 3px 4px 4px rgba(0, 0, 0, 0.3);          
+        }
+        
+        /* Loading screen styles */
+       
+#loading-screen {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #90ff2b; 
+    width: 100%;
+    height: 100vh;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 9999;
+    text-shadow: 3px 4px 4px rgba(0, 0, 0, 0.3);     
+}
+ 
+.icon-container img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    animation: pulse 2s infinite; 
+}
+
+.fas8{
+    margin-top: 15px;
+    font-size: 18px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+
+@keyframes pulse {
+    0% {
+        opacity: 0.3;
+    }
+    50% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0.3;
+    }
+}
+
+
+#main-content {
+    display: none;
+}
+  
+
+ header {
+            width: 100%;
+            padding: 10px;
+            text-align: center;
+            background: rgba(0, 0, 0, 0.8);
+            font-size: 6px;
+            
+       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+       text-shadow: 3px 4px 4px rgba(0, 0, 0, 0.3);     
+            
+        }
+
+        header h1 {
+            margin-bottom: 10px;
+        }
+
+        header h2 {
+            margin-top: 5px;
+        }
+
+        .tantabara-container {
+            position: relative;
+            width: 150px;
+            height: 150px;
+            margin-top: 200px;
+            padding: 0;
+                        border-radius: 50%;
+        }
+
+        .tantabara-container img {
+        justify-content: center;
+            width: 100%;
+            height: 100%;
+               
+            border-radius: 50%;
+       box-shadow: 0 0 20px rgba(118, 75, 162, 0.5);        
+            
+        }
+        
+      
+        .fly-coin {
+            position: absolute;
+            font-size: 2rem;
+            left: 50%;
+            top: 100%;
+        }
+
+        .fly-right {
+            animation: flyRight 2s ease-out;
+        }
+
+        .fly-left {
+            animation: flyLeft 2s ease-out;
+        }
+
+        .fly-up {
+            animation: flyUp 2s ease-out;
+        }
+
+        
+        @keyframes rotateTantabara {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(1080deg); }
+         }
+         
+
+        @keyframes flyRight {
+            0% { top: 100%; left: 50%; }
+            100% { top: 100%; left: 85%; }
+        }
+
+        @keyframes flyLeft {
+            0% { top: 100%; left: 50%; }
+            100% { top: 100%; left: 15%; }
+        }
+
+        @keyframes flyUp {
+            0% { top: 50%; left: 50%; }
+            100% { top: 15%; left: 50%; }
+        }
+
+     
+        footer {
+            position: fixe;
+            
+            bottom: 0;
+            
+            width: 100%;
+       background: rgba(0, 0, 0, 0.8)    
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            padding: 15px;
+            display: fixed;
+            justify-content: space-around;
+            text-shadow: 3px 4px 4px rgba(0, 0, 0, 0.3);     
+          
+        }
+
+        footer button {
+          
+         background-image: linear-gradient(135deg, #f39c12 25%, transparent 25%, transparent 50%, #f39c12 50%, #f39c12 75%, transparent 75%, transparent);
+    background-size: 20px 20px;
+    color: #fff;
+    background-color: #e67e22;
+    text-shadow: 0 0 5px #0003ff, 0 0 10px ;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+          
+            border: none;
+            color: white;
+            padding: 10px;
+            font-size: 13px;
+            Font-weight:bold;
+            cursor: pointer;
+            border-radius: 10px;
+          
+          border-bottom: 7px solid #90ff2b; 
+          border-left: 3px solid #90ff2b;
+          border-top: 1px solid #90ff2b;
+         border: none
+    color: white;
+    padding: 15px 32px
+    text-align: center;
+    
+    text-decoration: none;
+    display: inline-block    
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 12px;
+    transition: 0.4s ease-in-out;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);   
+        }
+
+        footer button:hover {
+            background-color: #45a049; 
+    transform: scale(1.1) rotate(5deg);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+        }
+
+        
+       .dove-icon {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);    
+        }
+
+        
+        .fly-coin span {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .red {
+            color: red;
+        }
+
+        .green {
+            color: green;
+        }
+      .unt{          
+          Font-weight:bold;
+           Font-size:13px;
+       }
+           
+.tana {
+    width: 20px;
+    height:20px;
+    border-radius: 50%;
+    animation: rotate-horizontal 10s linear infinite; 
+}
+
+@keyframes rotate-horizontal {
+    from {
+        transform: rotateY(0deg); 
+    }
+    to {
+        transform: rotateY(360deg); 
+    }
+.well{
+   Color:#40f5ff; Font-weight:bold;
+    Font-size:2px;
+    
+}
+
+.fly-coin {
+    position: fixed;
+    bottom: 50px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #000;
+    z-index: 9999;
+    opacity: 1;
+    transition: transform 2s ease-in-out, opacity 2s ease-in-out;
+}
+
+.fly-up {
+    transform: translateX(-50%) translateY(-200px);
+    opacity: 0;
+}
+
+.red {
+    color: red;
+}
+
+.green {
+    color: green;
+}
+@keyframes rotateTantabara {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(1080deg); 
+  }
+}
+
+    </style>
+    <style>               #network-status {
+         display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #90ff2b; 
+    width: 100%;
+    height: 100vh;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 9999;
+    text-shadow: 3px 4px 4px rgba(0, 0, 0, 0.3);     
+}
+ 
+        #network-status img {
+            width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+    margin-top: 100px;
+    font-size: 18px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    }
+
+        @keyframes pulse {
+            0% {
+                opacity: 0.3;
+            }
+            50% {
+                opacity: 1;
+            }
+            100% {
+                opacity: 0.3;
+            }
+        }
+
+        .search {
+            display: center;
+            font-weight: bold;
+            font-size: 18px;
+            color: #1523ff;               
+        }
+    </style>
+    </head>
+<body>
+   <div id="loading-screen">
+        <div class="icon-container">
+            <img src="dove.png" alt="Loading Icon">
+        </div>
+        <p class="fas8"><i style="color:red;">Tana</i><i style="color:green;">Coin</i><i style="color:blue">
+            ...</i></p>
+    </div>
+ <i id="main-content" style="display:none;">
+    <video autoplay muted loop plays Inline  id="background-video">
+            <source src="video2.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    </i>
+    
+ <center><div id="network-status">
+        <img src="dove.png" alt="Loading Icon">        
+        <p class="search">Searching Network...</p>
+    </div></center>
+    
+    <header>
+        <h2 class="well">Welcome, <span id="usernameDisplay"></span></h2>
+        <h1>Total Mining <i style="color:red;">Tana</i><i style="color:green;">Coin</i>: <span id="totalCoins">1348.840</span></h1>
+        <h2><img src="dove.png" class="tana"><i class="unt" style="color:red;">Tana</i><i class="unt" style="color:green;">Coin</i>: </i><span id="userBalance">0.00000</span></h2>
+    </header>
+
+    <!-- Dove Icon for Mining -->
+    <div class="tantabara-container" onclick="mineTanaCoin()">    
+         <img  src="dove.png" alt="Tantabara" class="dove-icon" id="doveIcon">
+</div>
+
+
+    <!-- Footer -->
+    <footer>
+        <button onclick="location.href='mining-end.html'" >Mining End</button>
+        <button onclick="location.href='invete.html'"  >Invited</button>
+        <button onclick="location.href='chenge.html'"  >Market</button>
+    </footer>
+    <script>
+        function checkNetwork() {
+            const networkStatus = document.getElementById('network-status');
+            
+            if (!navigator.onLine) {
+                // Idan babu intanet, a bayyana network status
+                networkStatus.style.display = 'block'; 
+            } else {
+                // Idan an sami intanet, a boye network status
+                networkStatus.style.display = 'none'; 
+            }
+        }
+
+        // Saurari canji a haɗin intanet
+        window.addEventListener('online', checkNetwork);
+        window.addEventListener('offline', checkNetwork);
+
+        // Duba haɗin intanet da zarar an bude shafin
+        window.onload = function() {
+            checkNetwork();
+
+            var video = document.getElementById('background-video');
+            var loadingScreen = document.getElementById('loading-screen');
+            var mainContent = document.getElementById('main-content');
+
+            // When video is ready to play, hide loading screen and show main content
+            video.addEventListener('canplaythrough', function() {
+                loadingScreen.style.display = 'none'; // Hide loading screen
+                mainContent.style.display = 'block';  // Show main content
+            });
+        };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/admob-sdk"></script>
+<script type="module">
+  // Kawo ayyukan da kake bukata daga Firebase SDKs
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.1.0/firebase-app.js";
+  import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/9.1.0/firebase-firestore.js";
+         document.addEventListener('DOMContentLoaded', async function () {
+    // Karanta sunan mai amfani daga localStorage idan yana akwai
+    const username = localStorage.getItem('username');
+    if (username) {
+        document.getElementById('usernameDisplay').textContent = username;
+    }
+      
+    // Firebase configuration
+    const firebaseConfig = {
+        apiKey: "AIzaSyCldVBlGP7hsERLEa9R30PSYZEOXppYvDs",
+        authDomain: "tanacoin-75344.firebaseapp.com",
+        projectId: "tanacoin-75344",
+        storageBucket: "tanacoin-75344.appspot.com",
+        messagingSenderId: "425342256564",
+        appId: "1:425342256564:web:b33f74f41e8d7d62659ee1"
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    // Samo totalCoins daga Firebase ko localStorage idan ba a samu ba
+    async function getTotalCoins() {
+        let localTotal = localStorage.getItem('totalCoins');
+
+        if (localTotal) {
+            document.getElementById("totalCoins").textContent = parseFloat(localTotal).toFixed(4);
+        } else {
+            const userDoc = doc(db, "users", username);
+            const docSnap = await getDoc(userDoc);
+
+            if (docSnap.exists() && docSnap.data().totalCoins) {
+                const realmTotal = docSnap.data().totalCoins;
+                document.getElementById("totalCoins").textContent = realmTotal.toFixed(4);
+                localStorage.setItem('totalCoins', realmTotal.toFixed(4));
+            } else {
+                document.getElementById("totalCoins").textContent = '2467.6804';
+            }
+        }
+    }
+
+    // Samo bayanan na farko
+    getTotalCoins();
+
+    // Kirga duk bayan minti 1 don sabunta totalCoins
+    setInterval(getTotalCoins, 60000);
+
+    let totalCoins = 1348.840;
+    let userBalance = parseFloat(localStorage.getItem('userBalance')) || 0.00000;
+    let clickCount = 0;
+ // Sabunta userBalance daga localStorage
+    document.getElementById('userBalance').innerText = userBalance.toFixed(5);
+
+   
+    // Mining Function
+        function mineTanaCoin() {
+            clickCount++;
+            userBalance += 0.0035847;
+     document.getElementById('userBalance').innerText = userBalance.toFixed(5);
+            localStorage.setItem('userBalance', userBalance.toFixed(5));      
+        
+
+        // Sabunta coins a cikin Firebase
+        const userDoc = doc(db, "users", username);
+        await setDoc(userDoc, { userBalance: userBalance.toFixed(5) }, { merge: true });
+
+        // Animate Dove Icon (rotate 3 times)
+        
+        // Animate Dove Icon (rotate 3 times)
+            const doveIcon = document.getElementById('doveIcon');
+            doveIcon.style.animation = "rotateTantabara 2s linear";
+
+            setTimeout(() => {
+                doveIcon.style.animation = "";
+            }, 2000);
+                 displayFlyingCoin(clickCount % 3);        
+        if (clickCount % 3 === 0) {
+            clickCount = 0;
+        }
+    }
+
+    function displayFlyingCoin(flightDirection) {
+        const coin = document.createElement('div');
+        coin.classList.add('fly-coin');
+        coin.innerHTML = '🕊️<span class="red">Tana</span><span class="green">Coin</span> 0.0035847';
+        if (flightDirection === 10) {
+            coin.classList.add('fly-right');
+        } else if (flightDirection === 2) {
+            coin.classList.add('fly-left');
+        } else {
+            coin.classList.add('fly-up');
+        }
+        
+
+        document.body.appendChild(coin);
+
+        setTimeout(() => {
+            coin.remove();
+        }, 2000);
+
+        // Animate extra TanaCoin + 🕊️
+        setTimeout(() => {
+            for (let i = 0; i < 4; i++) {
+                const randomCoin = document.createElement('div');
+                randomCoin.classList.add('fly-coin');
+                randomCoin.innerHTML = '🕊️<span class="red">Tana</span><span class="green">Coin</span> 0.0035847';
+                randomCoin.style.left = `${Math.random() * 100}%`;
+                randomCoin.style.top = `${Math.random() * 100}%`;
+                document.body.appendChild(randomCoin);
+
+                setTimeout(() => randomCoin.remove(), 2000);
+            }
+        }, 1000);
+    }
+    
+    
+          
+document.addEventListener('DOMContentLoaded', function () {
+    let userBalance = parseFloat(localStorage.getItem('userBalance')) || 0.00000;
+    document.getElementById('userBalance').innerText = userBalance.toFixed(5);
+    
+    function showAds() {
+      
+        admob.requestInterstitialAd({
+            adId: 'ca-app-pub-8072917028976228/9874063231',
+            autoShow: true,
+            success: function () {
+                console.log("Ad shown successfully");
+                adsDisplayed = true;
+                
+                displayFlyingCoin(10);        setTimeout(() => {
+                    if (adsDisplayed) {
+                        userBalance += 0.758396;
+                        document.getElementById('userBalance').innerText = userBalance.toFixed(5);
+                        localStorage.setItem('userBalance', userBalance.toFixed(5));
+                        adsDisplayed = false;
+                    }
+                }, 2000);
+            },
+            error: function () {
+                console.log("Ad failed to load");
+            }
+        });
+    }
+
+    function displayFlyingCoin(flightDirection) {
+        const coin = document.createElement('div');
+        coin.classList.add('fly-coin');
+        coin.innerHTML = '🕊️<span class="red">Tana</span><span class="green">Coin</span> 0.758396';
+        
+        if (flightDirection === 10) {  
+            coin.classList.add('fly-up');
+        }
+
+        document.body.appendChild(coin);
+
+        
+        setTimeout(() => {
+            coin.remove();
+        }, 2000);
+    }
+
+    
+    showAds();
+
+    
+    setInterval(() => {
+        if (!adsDisplayed) {
+            showAds();
+        }
+    }, 120000);
+
+    
+    setTimeout(() => {
+        
+        const userId = "users"; 
+        const userData = {
+            balance: userBalance
+        };
+
+         database.ref('users/' + userId).update(userData)
+            .then(() => {
+                console.log("User balance successfully updated in Firebase.");
+            })
+            .catch((error) => {
+                console.error("Error updating user balance in Firebase:", error);
+            });                
+         document.getElementById('userBalance').innerText = userBalance.toFixed(5); // Sabunta ma'aunin kudi a shafin
+
+    }, 300000); // 5 minutes
+});  
+});           
+    </script>    
+</body>
+</html>
+    
