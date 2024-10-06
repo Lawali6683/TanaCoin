@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TanaCoin Mining</title>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body, html {
+            height: 100%;
+            overflow: hidden;
+            font-family: Arial, sans-serif;
+       text-shadow: 3px 4px 4px rgba(0, 0, 0, 0.3);          
+        }
+
+        #background-video {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+      text-shadow: 3px 4px 4px rgba(0, 0, 0, 0.3);           
+        }
+
+        /* Register container styling */
+        .register-container {
+            width: 350px;
+            background: rgba(255, 255, 255, 0.9);
+           
+            
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+            z-index: 10;
+            overflow-y: auto;
+        }
+
+        h1 {
+            text-align: center;
+            color: #0003ff;
+            margin-bottom: 20px;
+            font-weight: bold;
+            font-size: 17px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            margin-bottom: 5px;
+            font-size: 14px;
+            text-align: left;
+            Font-weight:bold;
+        }
+
+        input[type="text"], input[type="email"], input[type="password"] {
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #90ff2b;
+            border-radius: 5px;
+            font-size: 12px;
+        }
+
+        button {
+            padding: 10px;
+            background-color: #00FF00;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #007700;
+        }
+
+        .password-wrapper {
+            position: relative;
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+        }
+
+        p {
+            text-align: center;
+            font-size: 14px;
+        }
+
+        a {
+            color: #FF0000;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        /* Image container styling */
+        .image-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 2px; 
+        }
+
+        .image {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+          animation: pulse 2s infinite;     
+            box-shadow: 0 0 20px rgba(118, 75, 162, 0.5);
+            z-index: 10;
+        }
+
+        @keyframes rotate-horizontal {
+            from {
+                transform: rotateY(0deg);
+            }
+            to {
+                transform: rotateY(360deg);
+            }
+        }
+
+        /* Responsive styling */
+        @media (max-width: 600px) {
+            .register-container {
+                width: 90%;
+                padding: 20px;
+            }
+
+            .image {
+                width: 80px;
+                height: 80px;
+            }
+        
+        
+        /* Loading screen styles */
+#loading-screen {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #90ff2b; 
+    width: 100%;
+    height: 100vh;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 9999;
+}
+
+.icon-container img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    animation: pulse 2s infinite; 
+}
+
+.fas8{
+    margin-top: 15px;
+    font-size: 18px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+
+@keyframes pulse {
+    0% {
+        opacity: 0.3;
+    }
+    50% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0.3;
+    }
+}
+
+
+    </style>
+</head>
+<body>
+    
+    <div id="loading-screen">
+        <div class="icon-container">
+            <img src="dove.png" alt="Loading Icon">
+        </div>
+        <p class="fas8"><i style="color:red;">Tana</i><i style="color:green;">Coin</i><i style="color:blue">
+            ...</i></p>
+    </div>
+ <i id="main-content" style="display:none;">
+    <video autoplay muted loop plays Inline  id="background-video">
+            <source src="video.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    </i>
+
+    <!-- Image container -->
+    <div  class="image-container">
+    <img id="doveImage" src="dove.png" class="image" alt="Rotating Image" onclick="checkClicks()">
+</div>
+
+<script>
+    let clickCount = 0;
+
+    function checkClicks() {
+        clickCount++;
+        if (clickCount === 5) {
+            window.location.href = 'admin.html'; 
+        }
+    }
+</script>
+
+
+    <!-- Register form -->
+    <div class="register-container">
+        <h1><i style="color:red;">Tana</i><i style="color:green;">Coin</i> Mining Register</h1>
+        <form id="registerForm">
+            <label for="firstName">First Name</label>
+            <input type="text" id="firstName" name="firstName" placeholder="John" required>
+            
+            <label for="lastName">Last Name</label>
+            <input type="text" id="lastName" name="lastName" placeholder="Joseph" required>
+            
+            <label for="username">User Name</label>
+            <input type="text" id="username" name="username" placeholder="John@466" required>
+
+            <label for="email">Email Address</label>
+            <input type="email" id="email" name="email" placeholder="example@gmail.com" required>
+            
+            <label for="password">Password</label>
+            <div class="password-wrapper">
+                <input type="password" id="password" name="password" placeholder="Password" required>
+                <span class="toggle-password">👁️‍🗨️</span>
+            </div>
+            
+            <label for="confirmPassword">Confirm Password</label>
+            <div class="password-wrapper">
+                <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirm Password" required>
+                <span class="toggle-password">👁️‍🗨️</span>
+            </div>
+            
+            <button type="submit">Submit</button>
+        </form>
+        <p>Already have an account? <a href="login.html">Login</a></p>
+    </div>
+    
+<script>
+        window.onload = function() {
+    var video = document.getElementById('background-video');
+    var loadingScreen = document.getElementById('loading-screen');
+    var mainContent = document.getElementById('main-content');
+
+    // When video starts playing, hide the loading screen and show the main content
+    video.addEventListener('canplaythrough', function() {
+        loadingScreen.style.display = 'none'; // Hide loading screen
+        mainContent.style.display = 'block';  // Show main content
+    });
+};
+
+    </script>
+                
+<script type="module">
+  // Kawo ayyukan da kake bukata daga Firebase SDKs
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.1.0/firebase-app.js";
+  import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/9.1.0/firebase-firestore.js";
+
+  // Saitin Firebase na aikin ka
+  const firebaseConfig = {
+    apiKey: "AIzaSyCldVBlGP7hsERLEa9R30PSYZEOXppYvDs",
+    authDomain: "tanacoin-75344.firebaseapp.com",
+    projectId: "tanacoin-75344",
+    storageBucket: "tanacoin-75344.appspot.com",
+    messagingSenderId: "425342256564",
+    appId: "1:425342256564:web:b33f74f41e8d7d62659ee1"
+  };
+
+  // Fara Firebase
+  const app = initializeApp(firebaseConfig);
+
+  // Fara Firestore
+  const db = getFirestore(app);
+
+  // Aikin bayanai lokacin da aka tura fom na rajista
+  document.getElementById('registerForm').addEventListener('submit', async function (e) {
+    e.preventDefault();
+
+    const firstName = document.getElementById('firstName').value;
+    const lastName = document.getElementById('lastName').value;
+    const username = document.getElementById('username').value;
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+    const confirmPassword = document.getElementById('confirmPassword').value;
+
+    // Binciken cewa username yana dauke da haruffa da lambobi
+    const usernameRegex = /^[a-zA-Z0-9]+$/;
+    if (!usernameRegex.test(username)) {
+        alert('Dole ne sunan mai amfani ya ƙunshi haruffa da lambobi.');
+        return;
+    }
+
+    // Binciken ko username ya riga an yi amfani da shi
+    if (localStorage.getItem(username)) {
+        alert('Wannan sunan mai amfani an riga an yi amfani da shi.');
+        return;
+    }
+
+    // Binciken ko email ya riga an yi amfani da shi
+    const users = JSON.parse(localStorage.getItem('users')) || [];
+    if (users.some(user => user.email === email)) {
+        alert('Wannan adireshin imel an riga an yi amfani da shi.');
+        return;
+    }
+
+    // Binciken ko kalmar sirri guda daya suke
+    if (password !== confirmPassword) {
+        alert('Kalmar sirri ba ta dace ba.');
+        return;
+    }
+
+    // Ajiye bayanan mai amfani a cikin localStorage
+    const userData = { firstName, lastName, username, email, password };
+    users.push(userData);
+    localStorage.setItem('users', JSON.stringify(users));
+
+    alert('Rajista ta yi nasara! Ana karkatar da kai zuwa shafin hakar ma\'adanai...');
+
+    // Karkatar da mai amfani zuwa mining.html bayan nasarar rajista
+    window.location.href = 'mining.html';
+
+    // Aiki don tura bayanan mai amfani daga localStorage zuwa Firebase Firestore
+    async function sendDataToFirebase() {
+        try {
+            for (let i = 0; i < localStorage.length; i++) {
+                const userData = JSON.parse(localStorage.getItem(localStorage.key(i)));
+                if (userData) {
+                    await addDoc(collection(db, "users"), userData);
+                }
+            }
+            console.log("Duk bayanan localStorage sun tafi zuwa Firebase Firestore");
+        } catch (err) {
+            console.error("Kuskure yayin tura bayanai zuwa Firebase Firestore", err);
+        }
+    }
+    // Saita lokaci na tura bayanan mai amfani zuwa Firebase Firestore bayan mintuna 2
+    setTimeout(function () {
+        sendDataToFirebase();
+    }, 120000); // mintuna 2
+  });
+</script>
+</body>
+</html>
