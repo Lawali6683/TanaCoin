@@ -391,6 +391,7 @@
         <button onclick="location.href='invete.html'"  >Invited</button>
         <button onclick="location.href='chenge.html'"  >Market</button>
     </footer>
+
     <script>
         function checkNetwork() {
             const networkStatus = document.getElementById('network-status');
@@ -425,15 +426,33 @@
     </script>
     <script src="https://cdn.jsdelivr.net/npm/admob-sdk"></script>
 <script type="module">
+    
   // Kawo ayyukan da kake bukata daga Firebase SDKs
   import { initializeApp } from "https://www.gstatic.com/firebasejs/9.1.0/firebase-app.js";
   import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/9.1.0/firebase-firestore.js";
          document.addEventListener('DOMContentLoaded', async function () {
-    // Karanta sunan mai amfani daga localStorage idan yana akwai
-    const username = localStorage.getItem('username');
-    if (username) {
-        document.getElementById('usernameDisplay').textContent = username;
+    // Assuming you've set up Firebase and the user is authenticated
+function setUsername() {
+    // Fetch the username from Firebase after user login
+    let user = firebase.auth().currentUser;
+    if (user) {
+        let username = user.displayName || user.email; // fallback to email if displayName is not set
+        localStorage.setItem('username', username);
+        document.getElementById('usernameDisplay').innerText = username;
+    } else {
+        console.log("User is not logged in.");
     }
+}
+
+// Kira aikin bayan Firebase authentication
+auth.onAuthStateChanged((user) => {
+    if (user) {
+        setUsername(); // Ajiye username a cikin localStorage
+    } else {
+        console.log("Babu wani mai amfani da ya shiga.");
+    }
+});
+
       
     // Firebase configuration
     const firebaseConfig = {
@@ -482,33 +501,46 @@
     document.getElementById('userBalance').innerText = userBalance.toFixed(5);
 
    
-    // Mining Function
-        function mineTanaCoin() {
-            clickCount++;
-            userBalance += 0.0035847;
-     document.getElementById('userBalance').innerText = userBalance.toFixed(5);
-            localStorage.setItem('userBalance', userBalance.toFixed(5));      
-        
+   // Mining Function
+async function mineTanaCoin() {
+    let clickCount = parseInt(localStorage.getItem('clickCount')) || 0;
+    let userBalance = parseFloat(localStorage.getItem('userBalance')) || 0;
 
-        // Sabunta coins a cikin Firebase
+    // Update the values
+    clickCount++;
+    userBalance += 0.0035847;
+
+    // Update UI and localStorage
+    document.getElementById('userBalance').innerText = userBalance.toFixed(5);
+    localStorage.setItem('userBalance', userBalance.toFixed(5));
+    localStorage.setItem('clickCount', clickCount);
+
+    // Animate Dove Icon (rotate 3 times)
+    const doveIcon = document.getElementById('doveIcon');
+    doveIcon.style.animation = "rotateTantabara 2s linear";
+
+    // Sabunta coins a cikin Firebase
+    try {
         const userDoc = doc(db, "users", username);
         await setDoc(userDoc, { userBalance: userBalance.toFixed(5) }, { merge: true });
 
-        // Animate Dove Icon (rotate 3 times)
-        
-        // Animate Dove Icon (rotate 3 times)
-            const doveIcon = document.getElementById('doveIcon');
-            doveIcon.style.animation = "rotateTantabara 2s linear";
+        setTimeout(() => {
+            doveIcon.style.animation = "";
+        }, 2000);
 
-            setTimeout(() => {
-                doveIcon.style.animation = "";
-            }, 2000);
-                 displayFlyingCoin(clickCount % 3);        
+        // Display flying coin if clickCount is divisible by 3
+        displayFlyingCoin(clickCount % 3);
+
         if (clickCount % 3 === 0) {
-            clickCount = 0;
+            clickCount = 0;  // Reset clickCount
         }
-    }
 
+    } catch (error) {
+        console.error("Error updating document: ", error);
+    }
+}
+
+                                     
     function displayFlyingCoin(flightDirection) {
         const coin = document.createElement('div');
         coin.classList.add('fly-coin');
@@ -615,12 +647,12 @@ document.addEventListener('DOMContentLoaded', function () {
             .catch((error) => {
                 console.error("Error updating user balance in Firebase:", error);
             });                
-         document.getElementById('userBalance').innerText = userBalance.toFixed(5); // Sabunta ma'aunin kudi a shafin
+         document.getElementById('userBalance').innerText = userBalance.toFixed(5); 
 
-    }, 300000); // 5 minutes
+    }, 300); // 5 minutes
 });  
-});           
+   });
+        
     </script>    
 </body>
 </html>
-    
