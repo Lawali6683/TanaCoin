@@ -267,7 +267,22 @@
         </form>
         <p>Already have an account? <a href="login.html">Login</a></p>
     </div>
-    
+    <script>
+    const togglePasswordIcons = document.querySelectorAll('.toggle-password');
+
+    togglePasswordIcons.forEach(icon => {
+        icon.addEventListener('click', function() {
+            const input = this.previousElementSibling;
+            const inputType = input.getAttribute('type');
+            
+            if (inputType === 'password') {
+                input.setAttribute('type', 'text');
+            } else {
+                input.setAttribute('type', 'password');
+            }
+        });
+    });
+</script>
 <script>
         window.onload = function() {
     var video = document.getElementById('background-video');
@@ -284,28 +299,36 @@
     </script>
                 
 <script type="module">
-  // Kawo ayyukan da kake bukata daga Firebase SDKs
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.1.0/firebase-app.js";
-  import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/9.1.0/firebase-firestore.js";
+  // Import Firebase SDK
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.1.0/firebase-app.js";
+import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/9.1.0/firebase-firestore.js";
 
-  // Saitin Firebase na aikin ka
-  const firebaseConfig = {
+// Firebase config
+const firebaseConfig = {
     apiKey: "AIzaSyCldVBlGP7hsERLEa9R30PSYZEOXppYvDs",
     authDomain: "tanacoin-75344.firebaseapp.com",
     projectId: "tanacoin-75344",
     storageBucket: "tanacoin-75344.appspot.com",
     messagingSenderId: "425342256564",
     appId: "1:425342256564:web:b33f74f41e8d7d62659ee1"
-  };
+};
 
-  // Fara Firebase
-  const app = initializeApp(firebaseConfig);
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
 
-  // Fara Firestore
-  const db = getFirestore(app);
+// Function don ajiye bayanai a Firebase
+export async function saveUserData(uid, data) {
+    try {
+        await setDoc(doc(db, "users", uid), data);
+        return true;
+    } catch (error) {
+        console.error("Error writing document: ", error);
+        return false;
+    }
+}
 
-  // Aikin bayanai lokacin da aka tura fom na rajista
-  document.getElementById('registerForm').addEventListener('submit', async function (e) {
+document.getElementById('registerForm').addEventListener('submit', async function (e) {
     e.preventDefault();
 
     const firstName = document.getElementById('firstName').value;
@@ -315,61 +338,71 @@
     const password = document.getElementById('password').value;
     const confirmPassword = document.getElementById('confirmPassword').value;
 
-    // Binciken cewa username yana dauke da haruffa da lambobi
+    if (password !== confirmPassword) {
+        alert("Passwords do not match!");
+        return;
+    }
+
+    const userData = {
+        firstName,
+        lastName,
+        username,
+        email,
+        userBalance: 0
+    };
+
+    const uid = username + Date.now(); // Create unique user ID
+       
+     // Binciken cewa username yana dauke da haruffa da lambobi
     const usernameRegex = /^[a-zA-Z0-9]+$/;
     if (!usernameRegex.test(username)) {
-        alert('Dole ne sunan mai amfani ya ƙunshi haruffa da lambobi.');
+        alert('This example of the user Name (jonathan@76).');
         return;
     }
 
     // Binciken ko username ya riga an yi amfani da shi
     if (localStorage.getItem(username)) {
-        alert('Wannan sunan mai amfani an riga an yi amfani da shi.');
+        alert('Oredy use the User Name');
         return;
     }
 
-    // Binciken ko email ya riga an yi amfani da shi
-    const users = JSON.parse(localStorage.getItem('users')) || [];
-    if (users.some(user => user.email === email)) {
-        alert('Wannan adireshin imel an riga an yi amfani da shi.');
-        return;
-    }
+    // Firebase Firestore Binciken ko email ya riga an yi amfani da shi
+const firestore = firebase.firestore();  // Firestore initialization
+const usersRef = firestore.collection('users');  // Reference to 'users' collection
+
+// Binciken ko email ya riga an yi amfani da shi
+usersRef.where('email', '==', email).get()
+    .then((querySnapshot) => {
+        if (!querySnapshot.empty) {
+            alert('The email is already in use. Please log in to your account.');
+            return;
+        }        
+    })
+    .catch((error) => {
+        console.error('Error checking email existence: ', error);
+    });
+
 
     // Binciken ko kalmar sirri guda daya suke
     if (password !== confirmPassword) {
-        alert('Kalmar sirri ba ta dace ba.');
+        alert('This password is not correct.');
         return;
     }
 
-    // Ajiye bayanan mai amfani a cikin localStorage
-    const userData = { firstName, lastName, username, email, password };
-    users.push(userData);
-    localStorage.setItem('users', JSON.stringify(users));
+    // Save data in localStorage and Firebase
+    localStorage.setItem('userData', JSON.stringify(userData));
+    
+    const success = await saveUserData(uid, userData);
 
-    alert('Rajista ta yi nasara! Ana karkatar da kai zuwa shafin hakar ma\'adanai...');
-
-    // Karkatar da mai amfani zuwa mining.html bayan nasarar rajista
-    window.location.href = 'mining.html';
-
-    // Aiki don tura bayanan mai amfani daga localStorage zuwa Firebase Firestore
-    async function sendDataToFirebase() {
-        try {
-            for (let i = 0; i < localStorage.length; i++) {
-                const userData = JSON.parse(localStorage.getItem(localStorage.key(i)));
-                if (userData) {
-                    await addDoc(collection(db, "users"), userData);
-                }
-            }
-            console.log("Duk bayanan localStorage sun tafi zuwa Firebase Firestore");
-        } catch (err) {
-            console.error("Kuskure yayin tura bayanai zuwa Firebase Firestore", err);
-        }
+    if (success) {
+        alert("Registration successful!");
+        window.location.href = "mining.html"; // redirect to dashboard
+    } else {
+        localStorage.removeItem('userData');
+        alert("Registration failed. Try again.");
     }
-    // Saita lokaci na tura bayanan mai amfani zuwa Firebase Firestore bayan mintuna 2
-    setTimeout(function () {
-        sendDataToFirebase();
-    }, 120000); // mintuna 2
-  });
+});
+
 </script>
 </body>
 </html>
